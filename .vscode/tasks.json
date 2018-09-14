@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "cc input.c main.c -lX11 -lXext -lXi -lXrandr -lXinerama -lpthread -g -o usb2ps2",
+            "command": "cc src/*.c -Iinc -lX11 -lXext -lXi -lXrandr -lXinerama -lpthread -g -o usb2ps2",
             "problemMatcher": [
                 "$gcc"
             ]

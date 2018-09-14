@@ -1,3 +1,6 @@
+#ifndef _INPUT_H
+#define _INPUT_H
+
 #include <X11/extensions/XInput2.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -28,3 +31,5 @@ typedef struct _INPUT_EVENT_STRUCT
 void start_listening();
 void stop_listening();
 void get_events(OUT INPUT_EVENT_STRUCT** events, OUT int* count);
+
+#endif
