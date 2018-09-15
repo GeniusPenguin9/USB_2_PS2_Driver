@@ -1,4 +1,5 @@
 #include <wiringPi.h>
+#include "GPIO.h"
 
 main(void)
 {
@@ -13,7 +14,7 @@ void pinInit(void)
     pinMode(5, INPUT); /*CLOCK*/
 }
 
-void SendByte2Host(char byte_temp)
+void SendByteDev2Host(char byte_temp)
 {
     while (digitalRead(5) == HIGH)
     {
@@ -51,4 +52,12 @@ void SendByte2Host(char byte_temp)
         else
             break;
     };
+}
+
+void SendBytesDev2Host(char *byte_temp, int bytes_length)
+{
+}
+
+void RecByteHost2Dev()
+{
 }

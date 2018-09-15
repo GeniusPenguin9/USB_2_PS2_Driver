@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 .DS_Store
+=======
+build
+build/*
+>>>>>>> 8b32dc5f879c45cf17c07d8a3fc58c9e7dc24ca6
