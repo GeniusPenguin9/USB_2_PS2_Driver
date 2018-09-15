@@ -100,6 +100,9 @@ void* _start_listening(void* message)
 
         XFreeEventData(display, cookie);
 
+	//XWarpPointer(display, win,  win, 0, 0, 0, 0, 100, 100);
+	//XFlush(display);
+
         if (flush_flag)
         {
             event_count = current_index;
