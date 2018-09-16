@@ -1,11 +1,14 @@
 #ifndef _GPIO_H
 #define _GPIO_H
 
-void SendByteDev2Host(char byte_temp);
-void SendBytesDev2Host(char *byte_temp, int bytes_length);
-bool CheckHostHasMessage();
-char ReadByteHost2Dev();
+extern char HostBuffer;;
 
-typedef char bool;
+char GetOddParity(char byte_temp);
+void pinInit(void);
+void SendByteDev2Host(char byte_temp);
+void SendBytesDev2Host(char *p_byte_temp, int bytes_length);
+int CheckHostHasMessage();
+
+
 
 #endif
