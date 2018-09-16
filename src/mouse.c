@@ -20,7 +20,7 @@ void handle_host_message(PS2_MOUSE_HOST_COMMANDS host_command)
     if (host_command == RESET)
     {
         SendByteDev2Host(ACK);
-		mouse_init();
+        mouse_init();
     }
     else if (host_command == GET_DEVICE_ID)
     {
@@ -49,11 +49,11 @@ void handle_host_message(PS2_MOUSE_HOST_COMMANDS host_command)
         SendByteDev2Host(0x02);
         SendByteDev2Host(0x64);
     }
-	else if (host_command == ENABLE_DATA_REPORTING)
-	{
-		SendByteDev2Host(ACK);
-		g_enabled = 1;
-	}
+    else if (host_command == ENABLE_DATA_REPORTING)
+    {
+        SendByteDev2Host(ACK);
+        g_enabled = 1;
+    }
     else
     {
         SendByteDev2Host(ACK);
@@ -63,41 +63,43 @@ void handle_host_message(PS2_MOUSE_HOST_COMMANDS host_command)
 
 void mouse_init()
 {
-	g_mode = GENERIC_MOUSE;
-	g_enabled = 0;
-	SendByteDev2Host(BAT_SUCCESS);
-	SendByteDev2Host(g_mode);
-	g_initialized = 1;
+    g_mode = GENERIC_MOUSE;
+    g_enabled = 0;
+    SendByteDev2Host(BAT_SUCCESS);
+    SendByteDev2Host(g_mode);
+    g_initialized = 1;
 }
 
 void handle_mouse_messages(INPUT_EVENT_STRUCT *event_queue, int event_num)
 {
-	PS2_MOUSE_EXTENSION_PACK_STRUCT message;
-    while (CheckHostHasMessage())
+    PS2_MOUSE_EXTENSION_PACK_STRUCT message;
+    char host_byte;
+    while (CheckHostHasMessage(&host_byte))
     {
-        handle_host_message((PS2_MOUSE_HOST_COMMANDS)RecByteHost2Dev());
+        handle_host_message((PS2_MOUSE_HOST_COMMANDS)host_byte);
     }
-    for (INPUT_EVENT_STRUCT* event_ptr = event_queue; event_ptr - event_queue < event_num; event_ptr++)
+    for (INPUT_EVENT_STRUCT *event_ptr = event_queue; event_ptr - event_queue < event_num; event_ptr++)
     {
         if (event_ptr->event_type == EVENT_MOUSE_BUTTON_PRESS || event_ptr->event_type == EVENT_MOUSE_BUTTON_RELEASE || event_ptr->event_type == EVENT_MOUSE_MOTION)
         {
             message.status = 0b00001000 | (event_ptr->motion_X < 0 ? 0b00011000 : 0) | (event_ptr->motion_Y < 0 ? 0b00101000 : 0);
-			if (event_ptr->event_type == EVENT_MOUSE_BUTTON_PRESS)
-				message.status |= (event_ptr->mouse_button == BUTTON_MIDDLE ? 0b00000100 : 0) | (event_ptr->mouse_button == BUTTON_RIGHT ? 0b0010 : 0) | (event_ptr->mouse_button == BUTTON_LEFT ? 0b0001 : 0);
+            if (event_ptr->event_type == EVENT_MOUSE_BUTTON_PRESS)
+                message.status |= (event_ptr->mouse_button == BUTTON_MIDDLE ? 0b00000100 : 0) | (event_ptr->mouse_button == BUTTON_RIGHT ? 0b0010 : 0) | (event_ptr->mouse_button == BUTTON_LEFT ? 0b0001 : 0);
 
             message.movement_x = (int)event_ptr->motion_X;
             message.movement_y = (int)event_ptr->motion_Y;
-			if (event_ptr->event_type == EVENT_MOUSE_BUTTON_PRESS)
-				message.movement_z = (event_ptr->mouse_button == BUTTON_FORWARD? 1: event_ptr->mouse_button == BUTTON_BACK? -1: 0);				if (g_mode == GENERIC_MOUSE)
+            if (event_ptr->event_type == EVENT_MOUSE_BUTTON_PRESS)
+                message.movement_z = (event_ptr->mouse_button == BUTTON_FORWARD ? 1 : event_ptr->mouse_button == BUTTON_BACK ? -1 : 0);
+            if (g_mode == GENERIC_MOUSE)
 
-			if (g_mode == GENERIC_MOUSE && g_initialized && g_enabled)
-			{
-				SendBytesDev2Host(&message, 2);
-			} 
-			else if (g_mode != GENERIC_MOUSE && g_initialized && g_enabled)
-			{
-				SendBytesDev2Host(&message, 3);
-			}
+                if (g_mode == GENERIC_MOUSE && g_initialized && g_enabled)
+                {
+                    SendBytesDev2Host(&message, 2);
+                }
+                else if (g_mode != GENERIC_MOUSE && g_initialized && g_enabled)
+                {
+                    SendBytesDev2Host(&message, 3);
+                }
         }
     }
 }

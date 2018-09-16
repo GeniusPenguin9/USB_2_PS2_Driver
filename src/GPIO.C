@@ -4,6 +4,7 @@
 
 #define DataLine 0  /*BCM.17 -> wiring Pi.0 -> GPIO.0*/
 #define ClockLine 7 /*BCM.4 -> wiring Pi.7 -> GPIO.7*/
+#define HostLine 1
 
 char HostBuffer;
 
@@ -51,12 +52,18 @@ char GetOddParity(char byte_temp)
     return (~byte_temp) & 1;
 }
 
-void pinInit(void)
+void PinInit(void)
 {
     wiringPiSetup();
     pinMode(DataLine, INPUT);
     pinMode(ClockLine, GPIO_CLOCK);
+    pinMode(HostLine, INPUT);
     gpioClockSet(ClockLine, 15000);
+}
+
+int GetHostStatus()
+{
+    return digitalRead(HostLine);
 }
 
 int SendByteDev2Host(char byte_temp)
