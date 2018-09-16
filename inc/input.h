@@ -28,8 +28,17 @@ typedef struct _INPUT_EVENT_STRUCT
     double motion_Y;
 } INPUT_EVENT_STRUCT;
 
+typedef enum _MOUSE_BUTTONS_ENUM
+{
+    BUTTON_LEFT = 1,
+    BUTTON_MIDDLE = 2,
+    BUTTON_RIGHT = 3,
+    BUTTON_BACK = 4,
+    BUTTON_FORWARD = 5,
+} MOUSE_BUTTONS_ENUM;
+
 void start_listening();
 void stop_listening();
-void get_events(OUT INPUT_EVENT_STRUCT** events, OUT int* count);
+void get_events(OUT INPUT_EVENT_STRUCT **events, OUT int *count);
 
 #endif

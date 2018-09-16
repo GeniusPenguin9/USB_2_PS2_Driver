@@ -18,11 +18,11 @@ typedef struct _PS2_MOUSE_EXTENSION_PACK_STRUCT
     char movement_z;
 } PS2_MOUSE_EXTENSION_PACK_STRUCT;
 
-typedef enum 
+typedef enum
 {
-    GENERIC_MOUSE = 0x00,
-    EXTENDED_MOUSE = 0x03,
-    EXTENDED_MOUSE_WITH_BUTTONS = 0x04
+    GENERIC_MOUSE = 0,
+    EXTENDED_MOUSE = 3,
+    EXTENDED_MOUSE2 = 4
 } PS2_MOUSE_MODE;
 
 typedef enum
@@ -45,14 +45,16 @@ typedef enum
     SET_SCALING_11 = 0xE6
 } PS2_MOUSE_HOST_COMMANDS;
 
-typedef enum 
+typedef enum
 {
     ACK = 0xFA,
     BAT_SUCCESS = 0xAA,
     BAT_ERROR = 0xFC
 } PS_MOUSE_RESPONSE;
 
-void host_command_received(PS2_MOUSE_HOST_COMMANDS command);
-void mouse_event_received(INPUT_EVENT_STRUCT event);
+const char EXTENDED_MOUSE_TEST_COMMANDS[] = {0xF3, 0xC8, 0xF3, 0x64, 0xF3, 0x50};
+const char EXTENDED_MOUSE2_TEST_COMMANDS[] = {0xF3, 0xC8, 0xF3, 0xC8, 0xF3, 0x50};
+
+void handle_mouse_messages(INPUT_EVENT_STRUCT *event_queue, int event_num);
 
 #endif

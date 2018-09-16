@@ -1,4 +1,5 @@
 #include "input.h"
+#include "mouse.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,10 +10,14 @@ int main(int argc, char *argv[])
 
     while (1)
     {
+		while (0) // 检查5v电源输入
+		{
+			//等待5v
+			mouse_init();
+		}
+
         get_events(&event_queue, &event_queue_length);
-        for (int i = 0; i < event_queue_length; i++)
-        {
-            printf("%d,%d,%d,%f,%f\n", event_queue[i].event_type, event_queue[i].key_code, event_queue[i].mouse_button, event_queue[i].motion_X, event_queue[i].motion_Y);
-        }
+
+		handle_mouse_messages(event_queue, event_queue_length);
     }
 }

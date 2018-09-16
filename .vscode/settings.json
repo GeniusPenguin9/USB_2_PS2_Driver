@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "input.h": "c"
+        "input.h": "c",
+        "mouse.h": "c",
+        "gpio.h": "c"
     }
 }
